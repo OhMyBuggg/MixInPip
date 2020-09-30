@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Github-page : KeJyun Github Page教學" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Github-page</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+        <header class="inner">
+          <a id="forkme_banner" href="https://github.com/jejewu/resolvelib/tree/master">View on GitHub</a>
+
+          <h1 id="project_title">Pip and Pubgrub</h1>
+          <h2 id="project_tagline">Modify Pip's resolvelib to Pubgrub algorithm</h2>
+
+          <section id="downloads">
+            <a class="link_button" href="profile_page.html">Profile</a>
+            <a class="link_button" href="article_page.html">Articles</a>
+            <a class="link_button" href="reference_page.html">References</a>
+          </section>
+        </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h3>
+          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span>
+          </a>Welcome to our independent study project.
+        </h3>
+
+        <p>We are students from NCTU that work on our project about implement version solving algorithm - Pubgrub into python's package manager - pip.</p>
+
+        <h3>
+          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span>
+          </a>Briefly
+        </h3>
+        <p>
+          Pubgrub is a algorithm which is used to do version solving in Pub - the package manager in dart lang. And it use the different way to solve the version problem which is seem to be more efficient.
+        </p>
+        <p>
+          So the pip's team think it can also use in pip to improve efficiency - <a href="https://github.com/pypa/pip/issues/7406">github issue</a><br>
+          And that's what we are doing now!
+        </p>
+
+        <h3>
+          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span>
+          </a>What we do
+        </h3>
+        <p>
+          First we read some documents about pubgrub like article in <a href="https://medium.com/@nex3/pubgrub-2fb6470504f">medium</a> and <a href="https://github.com/dart-lang/pub/blob/master/doc/solver.md">solver.md</a> file in github (you can click Reference on top to see what we read) to know how pubgrub work. We also read the source code of pubgrub implementation on github
+          (<a href="https://github.com/dart-lang/pub">pub</a> and <a href="https://github.com/sdispater/mixology">mixology</a>)
+			<br>
+        <br>
+          And then we want to compare pubgrub and the origin algorithm uesd in pip, so we read <a href="https://github.com/sarugaku/resolvelib">pip's source code</a>.
+        <br>
+			<br>  
+          After reading, we know more about pubgrub and pip origin algorithm, and we made a slide to show an example to elaborate <a href="https://jejewu.github.io/resolvelib/article_page.html">the difference between these two algorithm</a>.
+        <h3>
+          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span>
+          </a><a href="https://github.com/OhMyBuggg/pip">Current progress</a>
+        </h3>
+          Now we forked pip to replace the algorithm by pubgrub, and we start to code. We want to end this project in the end of 2020.
+        <br>
+          Besides that, we also read the tests code in pip to know how the resolver work, and we classify them and make some commets on each test to show what situation it want to test. (you can check in Articles)
+        <h3>
+          <a name="welcome-to-github-pages" class="anchor" href="#welcome-to-github-pages"><span class="octicon octicon-link"></span>
+          </a>more detail
+        </h3>
+          As we mentained above, all document and resource that we read, you can find it in Reference, and you can see more detail about what you do in Articles
+        </p>
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Web's github : <a href="https://github.com/jejewu/resolvelib/tree/gh-pages">github.com/jejewu/resolvelib</a></p>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-31063691-4");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+
+  </body>
+</html>

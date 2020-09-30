@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+
+  <head>
+    <meta charset='utf-8' />
+    <meta http-equiv="X-UA-Compatible" content="chrome=1" />
+    <meta name="description" content="Github-page : KeJyun Github Page教學" />
+
+    <link rel="stylesheet" type="text/css" media="screen" href="stylesheets/stylesheet.css">
+
+    <title>Articles</title>
+  </head>
+
+  <body>
+
+    <!-- HEADER -->
+    <div id="header_wrap" class="outer">
+      <header class="inner">
+        <a id="forkme_banner" href="https://github.com/jejewu/resolvelib/tree/master">View on GitHub</a>
+
+        <h1 id="project_title">Pubgrub</h1>
+        <h2 id="project_tagline">Pubgrub study and implementation</h2>
+        <section id="downloads">
+          <a class="link_button" href="index.html">Home</a>   
+        </section>
+      </header>
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div id="main_content_wrap" class="outer">
+      <section id="main_content" class="inner">
+        <h2>
+          <a name="authors-and-contributors" class="anchor" href="#authors-and-contributors"><span class="octicon octicon-link"></span></a>Article
+        </h2>
+
+        <h3>
+          <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
+          </a>
+        </h3>
+
+        <h3>
+          <a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span>
+          </a>Pubgrub algorithm
+        </h3>
+
+        <p>Pubgrub has four steps basiclly.</p>
+        <p> 1.Unit propagation(find a specify package range) 2.Decision making (choose one version in range)3.Conflict resolution (if conflict,do that process)4.Error reporting--you can check more information in our<a href="https://docs.google.com/presentation/d/1ODSl5vlGgGOgi_jop-z68hvQb7yOH-yYFvJ61aJne6M/edit?usp=sharing">-slides-</a></p>
+
+        <img src="images/pubgrub_flowchart.png" clas="inline"/>
+        <figcaption>Pubgrub's flow chart we make</figcaption>
+
+        <h3>
+          <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
+          </a>Resolvelib in pip
+        </h3>
+
+        <p>Resolvelib want to choose latest version and just linearly find package's version </p>
+
+        <img src="images/pip_state.png" clas="inline"/>
+        <figcaption>Resolvelib's flow chart we make</figcaption>
+
+         <h3>
+          <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
+          </a>pip resolver's tests classfication
+        </h3> 
+
+        <p>The classfication is a by-product when we read pip test to know more about pip resolver, you can see more detail by <a href="https://docs.google.com/document/d/1_1M0zE4KC4gkOGEYDHEDE_frRkXasbPRze5703PdImQ/edit?usp=sharing">this link</a> </p>
+
+        <img src="images/pip_test_classfication.png" clas="inline"/>
+
+
+      </section>
+    </div>
+
+    <!-- FOOTER  -->
+    <div id="footer_wrap" class="outer">
+      <footer class="inner">
+        <p class="copyright">Web's github : <a href="https://github.com/jejewu/resolvelib/tree/gh-pages">github.com/jejewu/resolvelib</a></p>
+      </footer>
+    </div>
+
+    <script type="text/javascript">
+      var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+      document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+    </script>
+    <script type="text/javascript">
+      try {
+        var pageTracker = _gat._getTracker("UA-31063691-4");
+        pageTracker._trackPageview();
+      } catch(err) {}
+    </script>
+
+  </body>
+</html>

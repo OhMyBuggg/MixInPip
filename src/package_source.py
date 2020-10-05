@@ -8,16 +8,16 @@ from pip._internal.resolution.resolvelib.requirements import (
     SpecifierRequirement,
     RequiresPythonRequirement,
 )
-from pip._internal.resolution.mixology.dependency import Dependency
-from pip._internal.resolution.mixology.package import Package
+from src.dependency import Dependency
+from src.package import Package
 
-from pip._vendor.poetry_semver.version import Version
-from pip._vendor.poetry_semver.version_range import VersionRange
-from pip._vendor.poetry_semver import parse_constraint
-from pip._vendor.mixology.package_source import PackageSource as BasePackageSource
-from pip._vendor.mixology.constraint import Constraint
-from pip._vendor.mixology.range import Range
-from pip._vendor.mixology.union import Union
+from poetry-core.poetry.core.semver.version import Version
+from poetry-core.poetry.core.semver.version_range import VersionRange
+from poetry-core.poetry.core.semver import parse_constraint
+from mixology.mixology.package_source import PackageSource as BasePackageSource
+from mixology.mixology.constraint import Constraint
+from mixology.mixology.range import Range
+from mixology.mixology.union import Union
 
 
 class PackageSource(BasePackageSource):

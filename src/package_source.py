@@ -41,7 +41,7 @@ class PackageSource(BasePackageSource):
         versions = []
         for version in self.package[package].keys():
             if not constraint or constraint.allows_any(
-                Range(version, version, True, True)
+                Constraint(package, Range(version, version, True, True))
             ):
                 versions.append(version)
 

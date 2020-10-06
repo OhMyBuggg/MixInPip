@@ -4,12 +4,12 @@ import  os
 #sys.path.insert(1, myPath + '/../')
 #sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\MixInPip')
 #sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\MixInPip\\pip\\src')
-if __name__ == "__main__":
+#if __name__ == "__main__":
 	#print(sys.path)
-	sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\mixinpip_main\\MixInPip\\pip\\src\\')
-	sys.path[1] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\mixinpip_main\\MixInPip\\')
+	#sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\mixinpip_main\\MixInPip\\pip\\src\\')
+	#sys.path[1] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\mixinpip_main\\MixInPip\\')
 	#sys.path[1] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\MixInPip\\pip\\src')
-	print(sys.path)
+	#print(sys.path)
 #from .. import package_source
 #from pip._internal.package_source import PackageSource as pkg_src
 #from pip._internal.resolution.resolvelib.requirements import (
@@ -78,8 +78,8 @@ def test_version_for():
 	#test with constraint
 
 
-def test_dependencies_for():
-	return
+#def test_dependencies_for():
+	#return
 
 
 	

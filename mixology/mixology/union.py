@@ -1,7 +1,7 @@
 from typing import List
 from typing import Union as _Union
 
-import mixology.range
+import mixology.mixology.range
 
 
 class Union(object):

@@ -1,7 +1,9 @@
 import re
 import sys
 if __name__ == "__main__":
+    #sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\MixInPip\\pip\\src')
     sys.path[0] = ('/home/wc/pip-develop/src/')
+
 from pip._internal.resolution.resolvelib.provider import PipProvider
 from pip._internal.resolution.resolvelib.requirements import (
     ExplicitRequirement,
@@ -11,9 +13,9 @@ from pip._internal.resolution.resolvelib.requirements import (
 from src.dependency import Dependency
 from src.package import Package
 
-from poetry-core.poetry.core.semver.version import Version
-from poetry-core.poetry.core.semver.version_range import VersionRange
-from poetry-core.poetry.core.semver import parse_constraint
+from semver.semver.version import Version
+from semver.semver.version_range import VersionRange
+from semver.semver import parse_constraint
 from mixology.mixology.package_source import PackageSource as BasePackageSource
 from mixology.mixology.constraint import Constraint
 from mixology.mixology.range import Range

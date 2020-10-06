@@ -1,12 +1,18 @@
 from typing import List
-from typing import Union as _Union
 
-import mixology.mixology.range
+import semver
+
+from .empty_constraint import EmptyConstraint
+from .version_constraint import VersionConstraint
 
 
-class Union(object):
+class VersionUnion(VersionConstraint):
     """
-    An union of Ranges.
+    A version constraint representing a union of multiple disjoint version
+    ranges.
+
+    An instance of this will only be created if the version can't be represented
+    as a non-compound value.
     """
 
     def __init__(self, *ranges):
@@ -18,22 +24,33 @@ class Union(object):
 
     @classmethod
     def of(cls, *ranges):
+        from .version_range import VersionRange
+
         flattened = []
         for constraint in ranges:
             if constraint.is_empty():
                 continue
 
-            if isinstance(constraint, Union):
+            if isinstance(constraint, VersionUnion):
                 flattened += constraint.ranges
                 continue
 
             flattened.append(constraint)
 
         if not flattened:
-            return mixology.range.EmptyRange()
+            return EmptyConstraint()
 
         if any([constraint.is_any() for constraint in flattened]):
-            return mixology.range.Range()
+            return VersionRange()
+
+        # Only allow Versions and VersionRanges here so we can more easily reason
+        # about everything in flattened. _EmptyVersions and VersionUnions are
+        # filtered out above.
+        for constraint in flattened:
+            if isinstance(constraint, VersionRange):
+                continue
+
+            raise ValueError("Unknown VersionConstraint type {}.".format(constraint))
 
         flattened.sort()
 
@@ -51,7 +68,7 @@ class Union(object):
         if len(merged) == 1:
             return merged[0]
 
-        return Union(*merged)
+        return VersionUnion(*merged)
 
     def is_empty(self):
         return False
@@ -59,7 +76,10 @@ class Union(object):
     def is_any(self):
         return False
 
-    def allows_all(self, other):  # type: (_Union[mixology.range.Range, Union]) -> bool
+    def allows(self, version):  # type: (semver.Version) -> bool
+        return any([constraint.allows(version) for constraint in self._ranges])
+
+    def allows_all(self, other):  # type: (VersionConstraint) -> bool
         our_ranges = iter(self._ranges)
         their_ranges = iter(self._ranges_for(other))
 
@@ -74,7 +94,7 @@ class Union(object):
 
         return their_current_range is None
 
-    def allows_any(self, other):  # type: (_Union[mixology.range.Range, Union]) -> bool
+    def allows_any(self, other):  # type: (VersionConstraint) -> bool
         our_ranges = iter(self._ranges)
         their_ranges = iter(self._ranges_for(other))
 
@@ -92,9 +112,7 @@ class Union(object):
 
         return False
 
-    def intersect(
-        self, other
-    ):  # type: (_Union[mixology.range.Range, Union]) -> _Union[mixology.range.Range, Union]
+    def intersect(self, other):  # type: (VersionConstraint) -> VersionConstraint
         our_ranges = iter(self._ranges)
         their_ranges = iter(self._ranges_for(other))
         new_ranges = []
@@ -113,16 +131,12 @@ class Union(object):
             else:
                 their_current_range = next(their_ranges, None)
 
-        return Union.of(*new_ranges)
+        return VersionUnion.of(*new_ranges)
 
-    def union(
-        self, other
-    ):  # type: (_Union[mixology.range.Range, Union]) -> _Union[mixology.range.Range, Union]
-        return Union.of(self, other)
+    def union(self, other):  # type: (VersionConstraint) -> VersionConstraint
+        return VersionUnion.of(self, other)
 
-    def difference(
-        self, other
-    ):  # type: (_Union[mixology.range.Range, Union]) -> _Union[mixology.range.Range, Union]
+    def difference(self, other):  # type: (VersionConstraint) -> VersionConstraint
         our_ranges = iter(self._ranges)
         their_ranges = iter(self._ranges_for(other))
         new_ranges = []
@@ -174,7 +188,7 @@ class Union(object):
                 continue
 
             difference = state["current"].difference(state["their_range"])
-            if isinstance(difference, Union):
+            if isinstance(difference, VersionUnion):
                 assert len(difference.ranges) == 2
                 new_ranges.append(difference.ranges[0])
                 state["current"] = difference.ranges[-1]
@@ -195,43 +209,48 @@ class Union(object):
                         break
 
         if not new_ranges:
-            return mixology.range.EmptyRange()
+            return EmptyConstraint()
 
         if len(new_ranges) == 1:
             return new_ranges[0]
 
-        return Union.of(*new_ranges)
-
-    def excludes_single_version(self):  # type: () -> bool
-        difference = self.difference(mixology.range.Range())
-
-        return (
-            isinstance(difference, mixology.range.Range)
-            and difference.is_single_version()
-        )
+        return VersionUnion.of(*new_ranges)
 
     def _ranges_for(
         self, constraint
-    ):  # type: (_Union[Union, mixology.range.Range]) -> List[mixology.range.Range]
+    ):  # type: (VersionConstraint) -> List[semver.VersionRange]
+        from .version_range import VersionRange
+
         if constraint.is_empty():
             return []
 
-        if isinstance(constraint, Union):
+        if isinstance(constraint, VersionUnion):
             return constraint.ranges
 
-        return [constraint]
+        if isinstance(constraint, VersionRange):
+            return [constraint]
+
+        raise ValueError("Unknown VersionConstraint type {}".format(constraint))
+
+    def _excludes_single_version(self):  # type: () -> bool
+        from .version import Version
+        from .version_range import VersionRange
+
+        return isinstance(VersionRange().difference(self), Version)
 
     def __eq__(self, other):
-        if not isinstance(other, Union):
+        if not isinstance(other, VersionUnion):
             return False
 
         return self._ranges == other.ranges
 
     def __str__(self):
-        if self.excludes_single_version():
-            return "!={}".format(mixology.range.Range().difference(self))
+        from .version_range import VersionRange
+
+        if self._excludes_single_version():
+            return "!={}".format(VersionRange().difference(self))
 
         return " || ".join([str(r) for r in self._ranges])
 
     def __repr__(self):
-        return "<Union {}>".format(str(self))
+        return "<VersionUnion {}>".format(str(self))

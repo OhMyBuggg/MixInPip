@@ -21,7 +21,7 @@ from pip._internal.resolution.resolvelib.provider import PipProvider
 from src.package_source import PackageSource
 from src.package import Package
 
-from poetry_core.poetry.core.semver.version import Version
+from semver.semver.version import Version
 
 from mixology.mixology.constraint import Constraint
 from mixology.mixology.range import Range

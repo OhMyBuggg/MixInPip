@@ -78,8 +78,8 @@ def test_version_for():
 	#test with constraint
 
 
-def test_dependencies_for():
-	return
+#def test_dependencies_for():
+	#return
 
 
 	

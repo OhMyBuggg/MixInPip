@@ -66,7 +66,7 @@ def test_version_for():
 	constraint_version_6=Version(3,3,1)
 	pkg_range_3=Range(constraint_version_5,constraint_version_6,True,True)
 
-	pkg_union=Union([pkg_range_1,pkg_range_2])
+	pkg_union=Union(pkg_range_1,pkg_range_2)
 	#pkg_Unions=_Union(pkg_range_3,pkg_union)
 
 	numpy_constraint=Constraint(pkg_name,pkg_union)

@@ -13,9 +13,9 @@ from pip._internal.resolution.resolvelib.requirements import (
 from src.dependency import Dependency
 from src.package import Package
 
-from poetry_core.poetry.core.semver.version import Version
-from poetry_core.poetry.core.semver.version_range import VersionRange
-from poetry_core.poetry.core.semver import parse_constraint
+from semver.semver.version import Version
+from semver.semver.version_range import VersionRange
+from semver.semver import parse_constraint
 from mixology.mixology.package_source import PackageSource as BasePackageSource
 from mixology.mixology.constraint import Constraint
 from mixology.mixology.range import Range

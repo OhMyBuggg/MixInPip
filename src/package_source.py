@@ -1,8 +1,6 @@
 import re
 import sys
-if __name__ == "__main__":
-    #sys.path[0] = ('C:\\Users\\chunw\\OneDrive\\桌面\\專題\\MixInPip\\pip\\src')
-    sys.path[0] = ('/home/wc/pip-develop/src/')
+
 
 from pip._internal.resolution.resolvelib.provider import PipProvider
 from pip._internal.resolution.resolvelib.requirements import (
@@ -26,7 +24,7 @@ class PackageSource(BasePackageSource):
     def __init__(self, provider, root_requirement):
         self._root_version = Version.parse("0.0.0")
         self.provider = provider
-        self.package = {} # store candidate
+        self.package = {} # store candidate {package_name(str):{version:candidate}}
         # must be list
         self.root_requirements = root_requirement # list[requirement] must be list
 
@@ -41,9 +39,9 @@ class PackageSource(BasePackageSource):
             return []
 
         versions = []
-        for version in self.package[package].keys():
+        for version in self.package[package.name].keys():
             if not constraint or constraint.allows_any(
-                Constraint(package, Range(version, version, True, True))
+                Range(version, version, True, True)
             ):
                 versions.append(version)
 
@@ -70,7 +68,8 @@ class PackageSource(BasePackageSource):
                 self.package[requirement.name] = {}
             candidates = self.provider.find_match(requirement)
             for candidate in candidates:
-                self.package[requirement.name][candidate.version] = candidate
+                version = Version.parse(candidate.version)
+                self.package[requirement.name][version] = candidate
 
             # change requirement to dependency (specifier to constraint)
             # and return dependency
@@ -141,28 +140,28 @@ class PackageSource(BasePackageSource):
         elif op_and_version[1] == '!=':
             # separate into two range
             
-            version = Verison.parse(op_and_version[2])
+            version = Version.parse(op_and_version[2])
             return [Range(min=version, max=None, include_min=False, include_max=False),
             Range(min=None, max=version, include_min=False, include_max=False)]
             
         elif op_and_version[1] == '>=':
             
-            version = Verison.parse(op_and_version[2])
+            version = Version.parse(op_and_version[2])
             return [Range(min=version, max=None, include_min=True, include_max=False)]
         
         elif op_and_version[1] == '>':
             
-            version = Verison.parse(op_and_version[2])
+            version = Version.parse(op_and_version[2])
             return [Range(min=version, max=None, include_min=False, include_max=False)]
         
         elif op_and_version[1] == '<=':
             
-            version = Verison.parse(op_and_version[2])
+            version = Version.parse(op_and_version[2])
             return [Range(min=None, max=version, include_min=False, include_max=True)]
         
         elif op_and_version[1] == '<':
             
-            version = Verison.parse(op_and_version[2])
+            version = Version.parse(op_and_version[2])
             return [Range(min=None, max=version, include_min=False, include_max=False)]
         
         else :

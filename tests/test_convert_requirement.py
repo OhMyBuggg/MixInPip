@@ -31,7 +31,7 @@ def test_ExplicitRequirement():
     pkg_version = '1.2.0'
 
     expected_range = Range(Version(1,2,0), Version(1,2,0), True, True)
-    expected_constraint = Constraint(Package(pkg_name), expected_range)
+    expected_constraint = Constraint(Package(pkg_name), Union(expected_range))
     
     test_candidate =  my_EditableCandidate (pkg_name,pkg_version)
     test_requirement = ExplicitRequirement(test_candidate)

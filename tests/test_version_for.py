@@ -29,6 +29,9 @@ def test_empty_packagesource():
 	#test package not in packagesource
 
 def test_no_constraint():
+	p = my_pkg_source(PipProvider,None)
+	pkg_name = "numpy"
+
 	version_1 = Version(1,2,0)
 	version_2 = Version(1,5,1)
 	test_package = {pkg_name:{version_1:"candidate",version_2:"candidate2"}}
@@ -45,6 +48,14 @@ def test_no_constraint():
 
 
 def test_with_constraint():
+	p = my_pkg_source(PipProvider,None)
+	pkg_name = "numpy"
+
+	version_1 = Version(1,2,0)
+	version_2 = Version(1,5,1)
+	test_package = {pkg_name:{version_1:"candidate",version_2:"candidate2"}}
+	p.init_pkg(test_package)
+	
 	constraint_version_1 = Version(1,2,0)
 	constraint_version_2 = Version(1,3,1)
 	pkg_range_1=Range(constraint_version_1,constraint_version_2,True,True)

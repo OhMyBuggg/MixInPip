@@ -79,8 +79,10 @@ class VersionSolver:
             )
         )
 
+        mapping = self._build_mapping()
+
         return SolverResult(
-            self._solution.decisions, self._solution.attempted_solutions
+            self._solution.decisions, self._solution.attempted_solutions, mapping
         )
 
     def _run(self):  # type: () -> bool
@@ -392,3 +394,17 @@ class VersionSolver:
                 continue
 
             self._incompatibilities[term.package].append(incompatibility)
+
+    def _build_mapping(self):
+        
+        mapping = {} #str : candidate
+        for package in self._solution.decisions:
+            version = self._solution.decisions[package]
+            candidate = self._source.search_candidate(package, version)
+            mapping[candidate.version][candidate]
+
+        return mapping
+
+    def _build_graph(self):
+        
+        pass

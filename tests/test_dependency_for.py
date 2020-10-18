@@ -35,7 +35,13 @@ def test_dependencies_for():
     expected = [Requirement("pub", rr), Requirement("pub2", rr)]
 
     assert expected == p.dependencies_for(pkg, v)
-    # code problem
-    # 1. package.name -> _name
-    # 2. version.version wrong -> or we need to build version has var version
-    # 3. build candidate have not test 
+
+# def test_package_build():
+#     p = PackageSource(MockProvider, None)
+#     pkg = Package("mixology")
+#     v = Version.parse("2.1.0")
+
+#     p.dependencies_for(pkg, v)
+
+#     # rrr what do package saved
+#     assert p.package["pub"]["1.0.0"] == 

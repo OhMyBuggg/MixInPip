@@ -368,6 +368,8 @@ def _build_result(state):
     graph.add(None)  # Sentinel as root dependencies' parent.
 
     connected = {None}
+    # criteria -> only dictionary {}
+    # dictionary is mutable 所以 _has_route_to_root 會改變 connected(dictionary)
     for key, criterion in state.criteria.items():
         if not _has_route_to_root(state.criteria, key, all_keys, connected):
             continue

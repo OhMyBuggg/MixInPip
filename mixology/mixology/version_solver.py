@@ -21,6 +21,8 @@ from .result import SolverResult
 from .set_relation import SetRelation
 from .term import Term
 
+from pip._vendor.resolvelib.structs import DirectedGraph
+
 
 logger = logging.getLogger(__name__)
 
@@ -80,6 +82,7 @@ class VersionSolver:
         )
 
         mapping = self._build_mapping()
+        graph = self._build_graph(mapping)
 
         return SolverResult(
             self._solution.decisions, self._solution.attempted_solutions, mapping
@@ -401,10 +404,21 @@ class VersionSolver:
         for package in self._solution.decisions:
             version = self._solution.decisions[package]
             candidate = self._source.search_candidate(package, version)
-            mapping[candidate.version][candidate]
+            mapping[package.name] = candidate
 
         return mapping
 
-    def _build_graph(self):
+    def _build_graph(self, mapping):
+        graph = DirectedGraph()
+        for package, candidate in mapping:
+            
+            if package.name not in graph:
+                graph.add(package.name)
+            
+            for requirement in self._source.provider._get_dependencies(candidate):
+                if requirement.name not in graph:
+                    graph.add(requirement.name)
+                
+                graph.connect(package.name, requirement.name)
         
-        pass
+        return graph

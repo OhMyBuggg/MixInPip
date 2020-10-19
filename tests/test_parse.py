@@ -10,7 +10,7 @@ def test_parse_equal():
     v = Version.parse("1.0.0")
     expected = Range(v, v, True, True)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_bigger():
     specifier = ">1.0.0"
@@ -18,7 +18,7 @@ def test_parse_bigger():
     v = Version.parse("1.0.0")
     expected = Range(v, None, False, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_smaller():
     specifier = "<1.0.0"
@@ -26,7 +26,7 @@ def test_parse_smaller():
     v = Version.parse("1.0.0")
     expected = Range(None, v, False, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_bigger_include():
     specifier = ">=1.0.0"
@@ -34,7 +34,7 @@ def test_parse_bigger_include():
     v = Version.parse("1.0.0")
     expected = Range(v, None, True, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_smaller_include():
     specifier = "<=1.0.0"
@@ -42,13 +42,14 @@ def test_parse_smaller_include():
     v = Version.parse("1.0.0")
     expected = Range(None, v, False, True)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
+# please check order of range
 def test_parse_not_equal():
     specifier = "!=1.0.0"
     p = PackageSource(PipProvider, None)
     v = Version.parse("1.0.0")
-    expected = [Range(None, v, False, False), Range(v, None, False, False)]
+    expected = [Range(v, None, False, False), Range(None, v, False, False)]
 
     assert expected == p.parse_specifier(specifier)
 
@@ -58,39 +59,39 @@ def test_parse_padding():
     v = Version.parse("12.55.0")
     expected = Range(v, v, True, True)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_compatible():
     specifier = "~=2.2"
     p = PackageSource(PipProvider, None)
     v = Version.parse("2.2")
     v2 = Version.parse("3.0")
-    expexted = Range(v, v2, True, False)
+    expected = Range(v, v2, True, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_compatible2():
     specifier = "~=1.4.5"
     p = PackageSource(PipProvider, None)
     v = Version.parse("1.4.5")
     v2 = Version.parse("1.5")
-    expexted = Range(v, v2, True, False)
+    expected = Range(v, v2, True, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_compatible3():
     specifier = "~=2.2.0"
     p = PackageSource(PipProvider, None)
     v = Version.parse("2.2")
     v2 = Version.parse("2.3")
-    expexted = Range(v, v2, True, False)
+    expected = Range(v, v2, True, False)
 
-    assert expected == p.parse_specifier(specifier)
+    assert [expected] == p.parse_specifier(specifier)
 
 def test_parse_arbitrary():
     # specifier = "===footbar"
     # p = PackageSource(PipProvider, None)
     # expexted = Range("footbar", "footbar", True, True)
 
-    # assert expected == p.parse_specifier(specifier)
+    # assert [expected] == p.parse_specifier(specifier)
     assert True

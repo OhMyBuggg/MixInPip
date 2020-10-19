@@ -121,8 +121,9 @@ class PackageSource(BasePackageSource):
         return constraint
     # Version.parse will return list of Range
     def parse_specifier(self, spec):
-        
-        op_and_version = re.split(r'(===|==|~=|!=|>=|>|<=|<|*)', spec) #list of str
+        # import pdb
+        # pdb.set_trace()
+        op_and_version = re.split(r'(===|==|~=|!=|>=|>|<=|<|\*)', spec) #list of str
         if op_and_version[1] == '===':
             # I surrender. I think it can't be transformed to range
             return [Range()]
@@ -140,11 +141,12 @@ class PackageSource(BasePackageSource):
             min = Version.parse(op_and_version[2])
             max = Version.parse(op_and_version[2])
 
-            if count == 1:
+            if count == 2:
+                max = max._increment_major()
+            elif count == 3:
                 max = max._increment_minor()
-            elif count == 2:
-                max = max._increment_patch()
-
+            # import pdb
+            # pdb.set_trace()
             return [ Range(min, max, True, False) ]
         
         elif op_and_version[1] == '!=':

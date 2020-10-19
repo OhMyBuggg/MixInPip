@@ -89,7 +89,9 @@ class PackageSource(BasePackageSource):
         return dependency
 
     def convert_requirement(self, requirement):
-        constraints = []
+        # convert requirement to the type which mixology recongize
+        # requirement -> constraint
+    
         if isinstance(requirement, ExplicitRequirement):
             # may occur problem because of unclean specifier
             #for_constraint = re.split(r'(===|==|~=|!=|>=|>|<=|<)', requirement.candidate.version)
@@ -109,14 +111,14 @@ class PackageSource(BasePackageSource):
                 ranges = ranges + temp_ranges
             
             # if there is a range only, error may happen (this problem is from "union and range" )
-            constraints.append(Constraint(Package(requirement.name), Union(*ranges)))
+            constraint = (Constraint(Package(requirement.name), Union(*ranges)))
         
         elif isinstance(requirement, RequiresPythonRequirement):
             pass
         else :
-            pass
+            print("some error happen")
 
-        return constraints
+        return constraint
     # Version.parse will return list of Range
     def parse_specifier(self, spec):
         

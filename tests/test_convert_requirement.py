@@ -50,7 +50,7 @@ def test_ExplicitRequirement(mocker):
     pkg_version = '1.2.0'
 
     expected_range = Range(Version(1,2,0), Version(1,2,0), True, True)
-    expected_constraint = Constraint(Package(pkg_name), Union(expected_range))
+    expected_constraint = Constraint(Package(pkg_name), expected_range)
     
     mocker.patch(
         'src.package_source.PackageSource.parse_specifier',
@@ -61,9 +61,12 @@ def test_ExplicitRequirement(mocker):
     test_requirement = ExplicitRequirement(test_candidate)
     result=pkg_src.convert_requirement(test_requirement)
 
-    assert type(result) is list
-    assert len(result) == 1
+    # import pdb
+    # pdb.set_trace()
+
     assert expected_constraint == result
+    # assert type(result) is list
+    # assert len(result) == 1
     
 
 #not finished, just a prototype
@@ -95,9 +98,9 @@ def test_SpecifierRequirement_single_specifier(mocker):
 
     result = pkg_src.convert_requirement(test_requirement)
 
-    assert type(result) is list
-    assert len(result) == 1
-    assert result[0] == expected_constraint
+    assert result == expected_constraint
+    # assert type(result) is list
+    # assert len(result) == 1
 
 #*****************************************
 #this test function mock the class method 'parse_specifier()'
@@ -126,9 +129,9 @@ def test_SpecifierRequirement_multiple_specifiers(mocker):
 
     result = pkg_src.convert_requirement(test_requirement)
 
-    assert type(result) is list
-    assert len(result) == 1
-    assert result[0] == expected_constraint
+    assert result == expected_constraint
+    # assert type(result) is list
+    # assert len(result) == 1
     
 
 

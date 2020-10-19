@@ -35,3 +35,6 @@ jobs:
     - name: Test with pytest
       run: |
         pytest tests/
+    - name: Test origin pip
+      run: |
+        pytest pip/tests/functional/test_new_resolver.py

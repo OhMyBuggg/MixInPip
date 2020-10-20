@@ -27,7 +27,7 @@ class PartialSolution:
         self._assignments = []  # type: List[Assignment]
 
         # The decisions made for each package.
-        self._decisions = OrderedDict()  # type: Dict[str, Hashable]
+        self._decisions = OrderedDict()  # type: Dict[str, Hashable] Dict[package, version]
 
         # The intersection of all positive Assignments for each package, minus any
         # negative Assignments that refer to that package.

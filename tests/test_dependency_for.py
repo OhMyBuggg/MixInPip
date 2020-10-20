@@ -21,7 +21,7 @@ class Candidate(object):
         self.version = version
 
 class MockProvider(PipProvider):
-    def _get_dependencies(self, candidate):
+    def get_dependencies(self, candidate):
         candidate1 = my_EditableCandidate('pub', '1.1.0')
         candidate2 = my_EditableCandidate('pub', '1.2.0')
         requirement1 = ExplicitRequirement(candidate1)

@@ -15,7 +15,7 @@ class Package(object):
         return self._name
 
     def __eq__(self, other):  # type: () -> bool
-        return str(other) == self.name
+        return str(other) == self._name
 
     def __str__(self):  # type: () -> str
         return self._name

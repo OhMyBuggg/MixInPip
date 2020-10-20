@@ -1,13 +1,19 @@
 from pip._internal.resolution.resolvelib.provider import PipProvider
 from src.package_source import PackageSource
 from src.package import Package
+from mixology.mixology.constraint import Constraint
 from semver.semver.version import Version
 from mixology.mixology.range import Range
+from pip._internal.resolution.resolvelib.requirements import (
+    ExplicitRequirement,
+    SpecifierRequirement,
+    RequiresPythonRequirement,
+)
+from pip._internal.resolution.resolvelib.candidates import EditableCandidate
 
-class Requirement(object):
-    def __init__(self, name, range):
-        self.name = name
-        self.range = range
+class my_EditableCandidate(EditableCandidate):
+    def __init__(self,name,version):
+        super(EditableCandidate,self).__init__(None,None,None,None,name,version)
 
 class Candidate(object):
     def __init__(self, name, version):
@@ -16,23 +22,27 @@ class Candidate(object):
 
 class MockProvider(PipProvider):
     def _get_dependencies(self, candidate):
-        v = Version.parse("1.0.0")
-        r = Range(v, None, True, False) # >=1.0.0
-        return [Requirement("pub", r), Requirement("pub2", r)]
+        candidate1 = my_EditableCandidate('pub', '1.1.0')
+        candidate2 = my_EditableCandidate('pub', '1.2.0')
+        requirement1 = ExplicitRequirement(candidate1)
+        requirement2 = ExplicitRequirement(candidate2)
+        return [requirement1, requirement2]
     def find_match(self, requirement):
-        v = Version.parse("1.1.0")
-        v2 = Version.parse("1.2.0")
-        return [Candidate(requirement.name, v), Candidate(requirement.name, v2)]
+        return [Candidate(requirement.name, '1.1.0'), Candidate(requirement.name, '1.2.0')]
 
 def test_dependencies_for():
     pkg = Package("mixology")
     v = Version.parse("2.1.0")
-    vv = Version.parse("1.0.0")
-    rr = Range(vv, None, True, False)
 
     p = PackageSource(MockProvider, None)
+    p.package[pkg] = {}
+    p.package[pkg][v] = {}
 
-    expected = [Requirement("pub", rr), Requirement("pub2", rr)]
+    expected_range1 = Range(Version(1,1,0), Version(1,1,0), True, True)
+    expected_constraint = Constraint(Package('pub'), expected_range1)
+    expected_range2 = Range(Version(1,2,0), Version(1,2,0), True, True)
+    expected_constraint2 = Constraint(Package('pub'), expected_range2)
+    expected = [expected_constraint, expected_constraint2]
 
     assert expected == p.dependencies_for(pkg, v)
 

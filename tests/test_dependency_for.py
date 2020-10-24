@@ -20,7 +20,7 @@ class Candidate(object):
         self.name = name
         self.version = version
 
-class MockProvider(PipProvider):
+class MockProvider():
     def get_dependencies(self, candidate):
         candidate1 = my_EditableCandidate('pub', '1.1.0')
         candidate2 = my_EditableCandidate('pub', '1.2.0')
@@ -32,11 +32,13 @@ class MockProvider(PipProvider):
 
 def test_dependencies_for():
     pkg = Package("mixology")
+
     v = Version.parse("2.1.0")
 
-    p = PackageSource(MockProvider, None)
+    Mock = MockProvider()
+    p = PackageSource(Mock, None)
     p.package[pkg] = {}
-    p.package[pkg][v] = {}
+    p.package[pkg][v] = Candidate("mixology","2.1.0")
 
     expected_range1 = Range(Version(1,1,0), Version(1,1,0), True, True)
     expected_constraint = Constraint(Package('pub'), expected_range1)

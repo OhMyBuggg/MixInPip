@@ -379,7 +379,8 @@ class VersionSolver:
                     for iterm in incompatibility.terms
                 ]
             )
-
+        # conflict initiate to false so if there is no incompatibility return
+        # it will be choose directly
         if not conflict:
             self._solution.decide(term.package, version)
             logger.info("selecting {} ({})".format(term.package, str(version)))

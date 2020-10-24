@@ -56,7 +56,8 @@ class PackageSource(BasePackageSource):
             requirements = self.root_requirements
         else:
             candidate = self.package[package][version]
-            requirements = self.provider._get_dependencies(candidate)
+            requirements = self.provider.get_dependencies(candidate)
+            
         
         # put candidate in requirement to self.package
         # in this way may take a lot of time in provider.find_match()

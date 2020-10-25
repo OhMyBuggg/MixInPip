@@ -85,7 +85,7 @@ class VersionSolver:
         graph = self._build_graph(mapping)
 
         return SolverResult(
-            self._solution.decisions, self._solution.attempted_solutions, mapping
+            self._solution.decisions, self._solution.attempted_solutions, mapping, graph
         )
 
     def _run(self):  # type: () -> bool
@@ -175,12 +175,14 @@ class VersionSolver:
                 unsatisfied = term
 
         # If *all* terms in incompatibility are satisfied by _solution, then
-        # incompatibility is satisfied and we have a conflict.
+        # incompatibility is satisfied and we have a conflict. SetRelation.SUBSET
         if unsatisfied is None:
             return _conflict
 
         logger.info("derived: {}".format(unsatisfied.inverse))
 
+        # add only one unsatisfied(overlapping) term, invert it
+        # create new incompatibility  
         self._solution.derive(
             unsatisfied.constraint, not unsatisfied.is_positive(), incompatibility
         )
@@ -203,6 +205,9 @@ class VersionSolver:
         logger.info("conflict: {}".format(incompatibility))
 
         new_incompatibility = False
+        # is_faulure will check whether this incompatibility is impossible avoidence
+        # eg: no term in incompatibility or only one positive root term
+        
         while not incompatibility.is_failure():
             # The term in incompatibility.terms that was most recently satisfied by
             # _solution.

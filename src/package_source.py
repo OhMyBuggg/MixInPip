@@ -115,7 +115,16 @@ class PackageSource(BasePackageSource):
             constraint = (Constraint(Package(requirement.name), Union(*ranges)))
         
         elif isinstance(requirement, RequiresPythonRequirement):
-            pass
+            
+            specs = requirement.specifier
+            ranges = []
+            for spec in specs:
+                s = spec.__str__()
+                temp_ranges = self.parse_specifier(s)
+                ranges = ranges + temp_ranges
+            
+            # if there is a range only, error may happen (this problem is from "union and range" )
+            constraint = (Constraint(Package(requirement.name), Union(*ranges)))
         else :
             print("some error happen")
 

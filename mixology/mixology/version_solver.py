@@ -207,7 +207,7 @@ class VersionSolver:
         new_incompatibility = False
         # is_faulure will check whether this incompatibility is impossible avoidence
         # eg: no term in incompatibility or only one positive root term
-        
+
         while not incompatibility.is_failure():
             # The term in incompatibility.terms that was most recently satisfied by
             # _solution.
@@ -237,6 +237,8 @@ class VersionSolver:
             for term in incompatibility.terms:
                 satisfier = self._solution.satisfier(term)
 
+                # search every item in incompatibility.terms to find most_recent_term
+                # and most_recent_satisfier
                 if most_recent_satisfier is None:
                     most_recent_term = term
                     most_recent_satisfier = satisfier

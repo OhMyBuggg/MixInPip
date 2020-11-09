@@ -16,10 +16,11 @@
     <!-- HEADER -->
     <div id="header_wrap" class="outer">
       <header class="inner">
-        <a id="forkme_banner" href="https://github.com/jejewu/resolvelib/tree/master">View on GitHub</a>
+        <a id="forkme_banner" href="https://github.com/OhMyBuggg/MixInPip/tree/master">View on GitHub</a>
 
-        <h1 id="project_title">Pubgrub</h1>
-        <h2 id="project_tagline">Pubgrub study and implementation</h2>
+        <h1 id="project_title">Pip and Pubgrub</h1>
+        <h2 id="project_tagline">Modify Pip's resolvelib to Pubgrub algorithm</h2>
+
         <section id="downloads">
           <a class="link_button" href="index.html">Home</a>   
         </section>
@@ -37,6 +38,16 @@
           <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
           </a>
         </h3>
+
+        <h3>
+          <a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span>
+          </a>What is package resolving
+        </h3>
+        <p>
+          Package resolving is used for package installers to resolve which version of package can install. It's a sat-problem which is NP-Complete. For example, if I give the package installer what kind of package I want to install (we called it constraints), [numpy >= 1.0.0; panda >= 2.16.0], package installer need to compute which package will fit the constraints, maybe the result will be [numpy 2.6.0; panda 2.16.5]. 
+          But usually it won't be that simple, assume [numpy 2.6.0] need another package [numpy-tools >= 2.0.0] (we called dependencies for numpy), package installer need to count it in and install it, so the install result might be [numpy 2.6.0; numpy-tools 2.6.0; panda 2.16.5]. 
+          So there will be more problems here. If the dependency need something we can't fit, for example [panda 2.16.5]'s dependency is [panda-tools <= 2.16], and [panda-tools 2.16.0]'s dependency is [tool-pack >= 2.10.0], [numpy-tools]'s dependency is [tool-pack == 2.6.0]. Obviously, there will be no answer to fit constraints, so the conflict happened. Package installer needs to find another version of the package to try whether it can be solved or not. If there is no combination of packages that can satisfy all dependencies without any conflict then we will call this situation “resolve impossible” which means the version solver can’t find the correct pattern of packages to satisfy the user's requirement. Otherwise, if the version solver can find a combination of packages that can satisfy all dependencies without any conflict then we will say it resolves successfully and the user's requirement is achievable.
+        </p>
 
         <h3>
           <a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span>
@@ -75,7 +86,7 @@
     <!-- FOOTER  -->
     <div id="footer_wrap" class="outer">
       <footer class="inner">
-        <p class="copyright">Web's github : <a href="https://github.com/jejewu/resolvelib/tree/gh-pages">github.com/jejewu/resolvelib</a></p>
+        <p class="copyright">Web's github : <a href="https://github.com/OhMyBuggg/MixInPip/tree/gh-pages">github.com/OhMyBuggg/MixInPip/tree/gh-pages</a></p>
       </footer>
     </div>
 

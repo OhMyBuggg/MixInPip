@@ -55,24 +55,54 @@
 
         <h3>
           <a name="designer-templates" class="anchor" href="#designer-templates"><span class="octicon octicon-link"></span>
-          </a>Pubgrub algorithm
+          </a>Pubgrub and Mixology
         </h3>
 
-        <p>Pubgrub has four steps basiclly.</p>
-        <p> 1.Unit propagation(find a specify package range) 2.Decision making (choose one version in range)3.Conflict resolution (if conflict,do that process)4.Error reporting--you can check more information in our<a href="https://docs.google.com/presentation/d/1ODSl5vlGgGOgi_jop-z68hvQb7yOH-yYFvJ61aJne6M/edit?usp=sharing">-slides-</a></p>
+        <h4>Mixology</h4>
+          <p>
+            mixology is an open source code in github which implements the version solver algorithm - pubgrub.
+          </p>
+        <h4>Pubgrub</h4>
+          <p>
+            pubgrub is a version solving algorithm and it has been known as the most efficient one. How do pubgrub compute the answer?
+          </p>
+          <p>
+            At the beginning, we need to introduce some basic units that pubgrub work with.  “Term” is a range of versions of a single package that is either required or forbidden. For example, [ menu ≥ 1.1.0 ] is a term, and so is [ not dropdown ≥ 2.0.0 ].  When we call this term has been satisfied which means we pick a specific version of the package and it matches the range of this term. For example, [ aa >= 1.0.0 ] is satisfied when [ aa: 2.0.0 ] has been selected.
+          </p>
+          <p>
+            After knowing what the term is, we can define incompatibility now. Incompatibility is a set of terms which must not all be satisfied at once. For example, the incompatibility { aa == 1.0.0, not bb < 2.0.0 } means that [ aa: 1.0.0 ] and [ bb: 3.0.0 ] can't exist simultaneously, for all terms in incompatibility have been satisfied in this situation. How can we understand the meaning of incompatibility? We can interpret incompatibility in this way. Because [ aa: 1.0.0  ] depends on [ bb < 2.0.0 ], [ bb < 2.0.0 ] must be existed when [ aa: 1.0.0 ] exist, and we can use a incompatibility - { aa == 1.0.0, not bb < 2.0.0 } to represent this situation.
+          </p>
+          <p>
+            And that's the main reason why it can resolve faster than before, it can reduce the solver step for doing the same thing like this: if we already know [ aa >= 2.0.0 ] depends on [ cc >= 2.0.0 ], but [ bb >= 1.0.0 ] depends on [ cc ^1.0.0 ], and root need both aa and bb. After calculating we will know the incompatibility { bb >= 1.0.0, not aa < 2.0.0 }, it can skip the step from [ aa: 2.5.0 ] to [ aa: 2.0.0 ] which is really redundant.
+          </p>
+          <p>
+            So how do Pubgrub done it? It contains mainly two phases in the core loop - "unit propagation" and "decision making".
+          </p>
+        <h4>Unit propagation: </h4>
+          <p>
+            the phase which combines the list of selected package versions with the set of incompatibilities that represent facts we know are always true to find terms that must be true given the package versions we have selected.
+          </p>
+          <p>
+            For example, if we choose [ aa: 1.6.0 ], we can look at { aa >= 1.0.0, not bb >= 1.0.0 }, which means [ bb >= 1.0.0 ] needs to exist (called derived term). This will send to Unit propagation again, to see whether it can derive more terms. If there is no more derivation to make, Unit propagation done. If there are still dependencies left unsatisfied, go to the Decision making phase. 
+          </p>
+
+        <h4>Decision making: </h4>
+          <p>
+            Choose a version which matches incompatibilities, and add it to the package list (choose by heuristic, pub choose the fewest total version, and pip choose the newest one). Also, add the new incompatibilities from the package we chose.
+          </p>
+          <p>
+            If everything goes well, we can find a package list matches our incompatibilities, or we can face another problem - Conflict.
+          </p>
+        <h4>Conflict:</h4>
+          <p>
+            During Unit propagation, we might derive something that satisfies some incompatibility, which is a conflict. We need to jump back to the most recently selected package version that might cause conflict, and try another version.
+          </p>
+          <p>
+            And Pubgrub does more than that, imagine we have incompatibilities { root, aa >= 1.0.0 } and { bb, not aa >= 1.0.0 }, which means [ root ] can't work with [ aa >= 1.0.0 ], but [ bb ] needs [ aa >= 1.0.0 ].So [ root ] can't work with [ bb ], we can combine incompatibilities to { root, bb }. It can let Pubgrub avoid running the same conflict again and again.
+          </p>
 
         <img src="images/pubgrub_flowchart.png" clas="inline"/>
         <figcaption>Pubgrub's flow chart we make</figcaption>
-
-        <h3>
-          <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
-          </a>Resolvelib in pip
-        </h3>
-
-        <p>Resolvelib want to choose latest version and just linearly find package's version </p>
-
-        <img src="images/pip_state.png" clas="inline"/>
-        <figcaption>Resolvelib's flow chart we make</figcaption>
 
         <h3>
           <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
@@ -93,6 +123,17 @@
         <p>
           In this section, I just mention a part of functionalities of pip which is also the part highly related to our graduate project. If anyone is curious about the strength of pip, there is the <a href="https://pip.pypa.io/en/stable/">link</a> of pip's document.
         </p>
+
+        <h3>
+          <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
+          </a>Resolvelib in pip
+        </h3>
+
+        <p>Resolvelib want to choose latest version and just linearly find package's version </p>
+
+        <img src="images/pip_state.png" clas="inline"/>
+        <figcaption>Resolvelib's flow chart we make</figcaption>
+
         <!-- <h3>
           <a name="rather-drive-stick" class="anchor" href="#rather-drive-stick"><span class="octicon octicon-link"></span>
           </a>pip resolver's tests classfication

@@ -1,7 +1,7 @@
 from typing import List
 from typing import Union as _Union
 
-import mixology.mixology.range
+from . import range as mixology
 
 
 class Union(object):
@@ -30,10 +30,10 @@ class Union(object):
             flattened.append(constraint)
 
         if not flattened:
-            return mixology.range.EmptyRange()
+            return mixology.EmptyRange()
 
         if any([constraint.is_any() for constraint in flattened]):
-            return mixology.range.Range()
+            return mixology.Range()
 
         flattened.sort()
 
@@ -195,7 +195,7 @@ class Union(object):
                         break
 
         if not new_ranges:
-            return mixology.range.EmptyRange()
+            return mixology.EmptyRange()
 
         if len(new_ranges) == 1:
             return new_ranges[0]
@@ -203,10 +203,10 @@ class Union(object):
         return Union.of(*new_ranges)
 
     def excludes_single_version(self):  # type: () -> bool
-        difference = self.difference(mixology.range.Range())
+        difference = self.difference(mixology.Range())
 
         return (
-            isinstance(difference, mixology.range.Range)
+            isinstance(difference, mixology.Range)
             and difference.is_single_version()
         )
 
@@ -229,7 +229,7 @@ class Union(object):
 
     def __str__(self):
         if self.excludes_single_version():
-            return "!={}".format(mixology.range.Range().difference(self))
+            return "!={}".format(mixology.Range().difference(self))
 
         return " || ".join([str(r) for r in self._ranges])
 

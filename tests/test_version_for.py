@@ -68,10 +68,9 @@ def test_with_constraint():
 	constraint_version_6 = Version(3,3,1)
 	pkg_range_3 = Range(constraint_version_5,constraint_version_6,True,True)
 
-	pkg_union = Union(pkg_range_1,pkg_range_2)
+	pkg_union = Union.of(pkg_range_1,pkg_range_2)
 
-	numpy_constraint = Constraint(pkg_name,pkg_union)
-	set_result = set(p._versions_for(pkg_name,numpy_constraint))
+	set_result = set(p._versions_for(pkg_name,pkg_union))
 
 	set_expect = set([version_1])
 

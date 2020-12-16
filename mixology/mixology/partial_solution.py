@@ -41,6 +41,8 @@ class PartialSolution:
         # map.
         #
         # This is derived from self._assignments.
+        # It is so wierd to use Dict[ package : Dict[ package : term ] ]
+        # why not just use Dict[ package : term ]
         self._negative = OrderedDict()  # type: Dict[Hashable, Dict[Hashable, Term]]
 
         # The number of distinct solutions that have been attempted so far.
@@ -145,9 +147,10 @@ class PartialSolution:
         """
         package = assignment.package
         old_positive = self._positive.get(package)
+        
+        # if one of them is positive then resulit will be also positive
         if old_positive is not None:
             self._positive[package] = old_positive.intersect(assignment)
-
             return
 
         ref = assignment.package
@@ -205,11 +208,13 @@ class PartialSolution:
     def satisfies(self, term):  # type: (Term) -> bool
         return self.relation(term) == SetRelation.SUBSET
 
+    # for checking whether partial solution satisified term 
     def relation(self, term):  # type: (Term) -> SetRelation
         positive = self._positive.get(term.package)
         if positive is not None:
             return positive.relation(term)
 
+        # by_ref is 
         by_ref = self._negative.get(term.package)
         if by_ref is None:
             return SetRelation.OVERLAPPING

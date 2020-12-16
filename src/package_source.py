@@ -56,7 +56,8 @@ class PackageSource(BasePackageSource):
             requirements = self.root_requirements
         else:
             candidate = self.package[package][version]
-            requirements = self.provider._get_dependencies(candidate)
+            requirements = self.provider.get_dependencies(candidate)
+            
         
         # put candidate in requirement to self.package
         # in this way may take a lot of time in provider.find_match()
@@ -114,7 +115,16 @@ class PackageSource(BasePackageSource):
             constraint = (Constraint(Package(requirement.name), Union(*ranges)))
         
         elif isinstance(requirement, RequiresPythonRequirement):
-            pass
+            
+            specs = requirement.specifier
+            ranges = []
+            for spec in specs:
+                s = spec.__str__()
+                temp_ranges = self.parse_specifier(s)
+                ranges = ranges + temp_ranges
+            
+            # if there is a range only, error may happen (this problem is from "union and range" )
+            constraint = (Constraint(Package(requirement.name), Union(*ranges)))
         else :
             print("some error happen")
 
